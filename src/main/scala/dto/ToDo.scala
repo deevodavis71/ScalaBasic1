@@ -1,3 +1,5 @@
+package dto
+
 import cats.effect.*
 import io.circe.generic.auto.*
 import org.http4s.EntityEncoder

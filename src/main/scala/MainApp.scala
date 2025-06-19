@@ -1,6 +1,8 @@
 import cats.effect.*
+import data.Db
 import doobie.Transactor
 import doobie.implicits.*
+import dto.{ToDo, given_EntityEncoder_IO_List}
 import org.http4s.*
 import org.http4s.Method.GET
 import org.http4s.Uri.Path.Root

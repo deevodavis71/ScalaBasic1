@@ -1,3 +1,5 @@
+package data
+
 import cats.effect.*
 import cats.syntax.all.*
 import doobie.*
