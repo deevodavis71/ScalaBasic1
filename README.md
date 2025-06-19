@@ -30,6 +30,16 @@ Used to interact with an in-memory H2 database using `ConnectionIO` values that 
 
 ```bash
 $ sbt run
+
+[info] welcome to sbt 1.11.2 (Homebrew Java 21.0.5)
+[info] loading project definition from /Users/steve.davis/Development/scala/ScalaBasic1/project
+[info] loading settings for project root from build.sbt...
+[info] set current project to ScalaBasic1 (in build file:/Users/steve.davis/Development/scala/ScalaBasic1/)
+[info] running (fork) MainApp
+[error] SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+[error] SLF4J: Defaulting to no-operation (NOP) logger implementation
+[error] SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+[info] Starting the HTTP Server on port 8080 ...
 ```
 
 # Interacting with the app

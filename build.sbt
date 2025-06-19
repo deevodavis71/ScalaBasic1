@@ -2,6 +2,8 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 
 ThisBuild / scalaVersion := "3.3.6"
 
+ThisBuild / fork := true
+
 lazy val root = (project in file("."))
   .settings(
     name := "ScalaBasic1"
@@ -12,7 +14,7 @@ val CatsEffectVersion = "3.5.3"
 val CirceVersion = "0.14.6"
 val DoobieVersion = "1.0.0-RC4"
 
-// Cats Efects for Async code
+// Cats Effects for Async code
 libraryDependencies ++= Seq(
   "org.typelevel" %% "cats-effect" % CatsEffectVersion
 )
