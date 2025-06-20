@@ -26,13 +26,14 @@ object Db {
     val create =
       sql"""
         CREATE TABLE todo (
-          id    INT PRIMARY KEY,
-          title VARCHAR(255)
+          id        INT PRIMARY KEY,
+          title     VARCHAR(255),
+          completed BOOLEAN
         )
       """.update.run
 
     val insert =
-      sql"""INSERT INTO todo (id, title) VALUES (1, 'Learn Cats'), (2, 'Use http4s')"""
+      sql"""INSERT INTO todo (id, title, completed) VALUES (1, 'Learn Cats', false), (2, 'Use http4s', true)"""
         .update.run
 
     (create *> insert).transact(xa).void

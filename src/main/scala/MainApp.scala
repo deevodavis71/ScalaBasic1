@@ -1,8 +1,9 @@
 import cats.effect.*
 import data.Db
+import data.entity.ToDo
 import doobie.Transactor
 import doobie.implicits.*
-import dto.{ToDo, given_EntityEncoder_IO_List}
+import dto.{ToDoDto, given_EntityEncoder_IO_List}
 import org.http4s.*
 import org.http4s.Method.GET
 import org.http4s.Uri.Path.Root
@@ -24,9 +25,10 @@ object MainApp extends IOApp.Simple {
         case GET -> Root / "todos" =>
           for {
             _ <- IO.println(s"'/todos' request received")
-            res <- sql"SELECT id, title FROM todo"
+            res <- sql"SELECT id, title, completed FROM todo"
               .query[ToDo]
               .to[List]
+              .map(_.map(todo => ToDoDto(todo.title, if (todo.completed) "done" else "pending")))
               .transact(xa)
               .flatMap(Ok(_))
           } yield res
