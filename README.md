@@ -49,5 +49,27 @@ $ curl localhost:8080/hello/world
 Hello, world
 
 $ curl localhost:8080/todos
-[{"id":1,"title":"Learn Cats"},{"id":2,"title":"Use http4s"}]
+[{"title":"Learn Cats","status":"pending"},{"title":"Use http4s","status":"done"}]
+```
+
+# Assembling for Deployment
+
+```bash
+$ sbt assembly
+
+[info] welcome to sbt 1.11.2 (Homebrew Java 21.0.5)
+[info] loading settings for project scalabasic1-build from plugins.sbt...
+[info] loading project definition from /Users/steve.davis/Development/scala/ScalaBasic1/project
+[info] loading settings for project root from build.sbt...
+[info] set current project to ScalaBasic1 (in build file:/Users/steve.davis/Development/scala/ScalaBasic1/)
+[info] 4 file(s) merged using strategy 'First' (Run the task at debug level to see the details)
+[info] 55 file(s) merged using strategy 'Discard' (Run the task at debug level to see the details)
+[info] Built: /Users/steve.davis/Development/scala/ScalaBasic1/target/scala-3.3.6/ScalaBasic1-assembly-0.1.0-SNAPSHOT.jar
+[info] Jar hash: 4d0827b7286e2446531842b4b5249310bbdbb81e
+[success] Total time: 3 s, completed 20 Jun 2025, 11:51:33
+
+$ java -jar target/scala-3.3.6/ScalaBasic1-assembly-0.1.0-SNAPSHOT.jar
+
+Initialising the DB...
+Starting the HTTP Server on port 8080 ...
 ```

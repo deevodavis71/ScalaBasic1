@@ -1,3 +1,5 @@
+enablePlugins(AssemblyPlugin)
+
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
 ThisBuild / scalaVersion := "3.3.6"
@@ -37,3 +39,11 @@ libraryDependencies ++= Seq(
   "org.tpolecat" %% "doobie-h2" % DoobieVersion,
   "org.tpolecat" %% "doobie-hikari" % DoobieVersion,
 )
+
+// Assembly support
+assembly / mainClass := Some("MainApp")
+
+assembly / assemblyMergeStrategy := {
+  case PathList("META-INF", xs@_*) => MergeStrategy.discard
+  case x => MergeStrategy.first
+}
