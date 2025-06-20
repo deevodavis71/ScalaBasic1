@@ -8,7 +8,6 @@ import doobie.implicits.*
 
 object Db {
 
-  // Set up the In-Memory DB resource
   val transactor: Resource[IO, Transactor[IO]] =
     for {
       ce <- ExecutionContexts.fixedThreadPool(2)
@@ -21,20 +20,19 @@ object Db {
       )
     } yield xa
 
-  // Initialise the DB with some data
   def init(xa: Transactor[IO]): IO[Unit] =
-    val create =
-      sql"""
-        CREATE TABLE todo (
-          id        INT PRIMARY KEY,
-          title     VARCHAR(255),
-          completed BOOLEAN
-        )
-      """.update.run
-
-    val insert =
-      sql"""INSERT INTO todo (id, title, completed) VALUES (1, 'Learn Cats', false), (2, 'Use http4s', true)"""
-        .update.run
-
-    (create *> insert).transact(xa).void
+    for {
+      _ <- IO.println("Initialising the DB...")
+      _ <- (
+        sql"""CREATE TABLE IF NOT EXISTS todo (
+                  id INT PRIMARY KEY,
+                  title VARCHAR,
+                  completed BOOLEAN
+               )""".update.run *>
+        sql"""INSERT INTO todo (id, title, completed) VALUES
+                  (1, 'Learn Cats', false),
+                  (2, 'Use http4s', true)
+               """.update.run
+        ).transact(xa)
+    } yield ()
 }

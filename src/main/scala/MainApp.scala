@@ -11,13 +11,12 @@ object MainApp extends IOApp.Simple {
   def run: IO[Unit] = {
 
     Db.transactor.use { xa =>
-      val repo = ToDoRepository(xa)
-      val service = ToDoService(repo)
-      val routes = ToDoRoutes(service).httpRoutes.orNotFound
-
       for {
-        _ <- IO.println("Starting the HTTP Server on port 8080 ...")
         _ <- Db.init(xa)
+        repo = ToDoRepository(xa)
+        service = ToDoService(repo)
+        routes = ToDoRoutes(service).httpRoutes.orNotFound
+        _ <- IO.println("Starting the HTTP Server on port 8080 ...")
         _ <- BlazeServerBuilder[IO]
           .bindHttp(8080, "0.0.0.0")
           .withHttpApp(routes)
