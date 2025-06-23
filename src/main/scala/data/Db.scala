@@ -25,13 +25,13 @@ object Db {
       _ <- IO.println("Initialising the DB...")
       _ <- (
         sql"""CREATE TABLE IF NOT EXISTS todo (
-                  id INT PRIMARY KEY,
-                  title VARCHAR,
+                  id INT AUTO_INCREMENT PRIMARY KEY,
+                  title VARCHAR(255),
                   completed BOOLEAN
                )""".update.run *>
-        sql"""INSERT INTO todo (id, title, completed) VALUES
-                  (1, 'Learn Cats', false),
-                  (2, 'Use http4s', true)
+        sql"""INSERT INTO todo (title, completed) VALUES
+                  ('Learn Cats', false),
+                  ('Use http4s', true)
                """.update.run
         ).transact(xa)
     } yield ()
