@@ -9,12 +9,10 @@ import org.http4s.Method.POST
 import org.http4s.blaze.client.BlazeClientBuilder
 import org.http4s.circe.*
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 
 class ToDoClient(port: Int):
   def sendRequest(): IO[Unit] = {
-    BlazeClientBuilder[IO](global).resource.use { client =>
+    BlazeClientBuilder[IO].resource.use { client =>
       val jsonPayload = ToDoDto("Sent Via Http Client", "pending")
 
       val req = Request[IO](method = POST, uri = Uri.unsafeFromString(s"http://localhost:${port}/todos"))
