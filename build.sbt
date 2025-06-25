@@ -30,8 +30,9 @@ libraryDependencies ++= Seq(
 // HTTP4S for API Routes
 libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-blaze-server" % Http4sVersion,
+  "org.http4s" %% "http4s-blaze-client" % Http4sVersion,
   "org.http4s" %% "http4s-dsl" % Http4sVersion,
-  "org.http4s" %% "http4s-circe" % Http4sVersion,
+  "org.http4s" %% "http4s-circe" % Http4sVersion
 )
 
 // Doobie for DB work
@@ -50,6 +51,6 @@ libraryDependencies ++= Seq(
 assembly / mainClass := Some("MainApp")
 
 assembly / assemblyMergeStrategy := {
-  case PathList("META-INF", xs*) => MergeStrategy.discard
+  case PathList("META-INF", _*) => MergeStrategy.discard
   case x => MergeStrategy.first
 }

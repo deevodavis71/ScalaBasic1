@@ -1,6 +1,8 @@
 package service
 
 import cats.effect.*
+import cats.effect.unsafe.implicits.global
+import client.ToDoClient
 import data.entity.ToDo
 import data.repository.ToDoRepository
 import dto.ToDoDto
@@ -20,3 +22,6 @@ class ToDoService(repo: ToDoRepository):
     ).handleErrorWith { err =>
       IO.println(s"[ERROR] Failed to create todo: ${err.getMessage}") *> IO.raiseError(err)
     }
+
+  def sendToDoRequest(port: Int): IO[Unit] =
+    ToDoClient(port).sendRequest().flatMap(_ => IO.println("Sent"))

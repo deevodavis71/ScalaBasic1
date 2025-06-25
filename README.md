@@ -1,7 +1,17 @@
 # Scala Functional HTTP API Example
 
 This project demonstrates how to build a small functional HTTP API in Scala using modern libraries including http4s,
-Cats Effect, Circe, and Doobie, with an in-memory H2 database.
+Cats Effect, Circe, PureConfig, and Doobie, with an in-memory H2 database.
+
+## TLDR;
+
+Shows the following functionality:
+
+* Application properties
+* HTTP Routes & API Endpoints
+* HTTP Client Request
+* Mapping between DTO & Entity Types
+* Database Requests
 
 ## Libraries Used
 
@@ -25,6 +35,10 @@ Used to serialize and deserialize JSON payloads.
 
 A functional JDBC layer for Scala.  
 Used to interact with an in-memory H2 database using `ConnectionIO` values that integrate with Cats Effect.
+
+### PureConfig `0.17.9`
+
+PureConfig is a Scala library for loading configuration files.
 
 # Running the app
 
@@ -50,6 +64,9 @@ Hello, world
 
 $ curl localhost:8080/todos
 [{"title":"Learn Cats","status":"pending"},{"title":"Use http4s","status":"done"}]
+
+$ curl localhost:8080/todos-request
+"Sent request"
 ```
 
 # Assembling for Deployment
@@ -71,5 +88,5 @@ $ sbt assembly
 $ java -jar target/scala-3.3.6/ScalaBasic1-assembly-0.1.0-SNAPSHOT.jar
 
 Initialising the DB...
-Starting the HTTP Server on port 8080 ...
+Starting the ScalaBasic1 HTTP Server on port 8080 ...
 ```

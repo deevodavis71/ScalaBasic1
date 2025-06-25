@@ -19,7 +19,7 @@ object MainApp extends IOApp.Simple {
         _ <- Db.init(xa)
         repo = ToDoRepository(xa)
         service = ToDoService(repo)
-        routes = ToDoRoutes(service).httpRoutes.orNotFound
+        routes = ToDoRoutes(appConfig, service).httpRoutes.orNotFound
         _ <- IO.println(s"Starting the ${appConfig.name} HTTP Server on port ${appConfig.port} ...")
         _ <- BlazeServerBuilder[IO]
           .bindHttp(appConfig.port, "0.0.0.0")
