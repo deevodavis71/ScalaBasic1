@@ -13,7 +13,7 @@ import properties.AppProperties
 
 class ToDoClient(port: Int):
   def sendRequest(): IO[Unit] = {
-    val appConfig = new AppProperties().load()
+    val appConfig = AppProperties.config
 
     BlazeClientBuilder[IO].resource.use { client =>
       val jsonPayload = ToDoDto(appConfig.makeRequestToDoContent.title, appConfig.makeRequestToDoContent.status)

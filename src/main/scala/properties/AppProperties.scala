@@ -13,8 +13,8 @@ case class MakeRequestToDoContentConfig(
                                          status: String
                                        )derives ConfigReader
 
-class AppProperties:
-  def load(): AppConfig =
+object AppProperties:
+  lazy val config: AppConfig =
     val result: ConfigReader.Result[AppConfig] = ConfigSource.default.load[AppConfig]
 
     result match

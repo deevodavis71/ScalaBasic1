@@ -12,7 +12,7 @@ import service.ToDoService
 object MainApp extends IOApp.Simple {
   def run: IO[Unit] = {
 
-    val appConfig = new AppProperties().load()
+    val appConfig = AppProperties.config
 
     Db.transactor.use { xa =>
       for {
