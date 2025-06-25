@@ -5,10 +5,14 @@ import http.ToDoRoutes
 import org.http4s.*
 import org.http4s.blaze.server.BlazeServerBuilder
 import org.http4s.implicits.*
+import properties.AppProperties
 import service.ToDoService
+
 
 object MainApp extends IOApp.Simple {
   def run: IO[Unit] = {
+
+    val appConfig = new AppProperties().load()
 
     Db.transactor.use { xa =>
       for {
@@ -16,9 +20,9 @@ object MainApp extends IOApp.Simple {
         repo = ToDoRepository(xa)
         service = ToDoService(repo)
         routes = ToDoRoutes(service).httpRoutes.orNotFound
-        _ <- IO.println("Starting the HTTP Server on port 8080 ...")
+        _ <- IO.println(s"Starting the ${appConfig.name} HTTP Server on port ${appConfig.port} ...")
         _ <- BlazeServerBuilder[IO]
-          .bindHttp(8080, "0.0.0.0")
+          .bindHttp(appConfig.port, "0.0.0.0")
           .withHttpApp(routes)
           .resource
           .useForever
