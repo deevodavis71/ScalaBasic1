@@ -16,6 +16,7 @@ val CatsEffectVersion = "3.5.3"
 val CirceVersion = "0.14.6"
 val DoobieVersion = "1.0.0-RC4"
 val PureConfigVersion = "0.17.9"
+val HedgehogVersion = "0.12.0"
 
 // Cats Effects for Async code
 libraryDependencies ++= Seq(
@@ -46,6 +47,16 @@ libraryDependencies ++= Seq(
 libraryDependencies ++= Seq(
   "com.github.pureconfig" %% "pureconfig-core" % PureConfigVersion
 )
+
+// Test dependencies
+libraryDependencies ++= Seq(
+  "qa.hedgehog" %% "hedgehog-core" % HedgehogVersion,
+  "qa.hedgehog" %% "hedgehog-runner" % HedgehogVersion,
+  "qa.hedgehog" %% "hedgehog-sbt" % HedgehogVersion
+)
+
+testFrameworks ~=
+  (frameworks => (TestFramework("hedgehog.sbt.Framework") +: frameworks).distinct)
 
 // Assembly support
 assembly / mainClass := Some("MainApp")
