@@ -1,13 +1,15 @@
 package service
 
 import cats.effect.*
-import cats.effect.unsafe.implicits.global
 import client.ToDoClient
 import data.entity.ToDo
 import data.repository.ToDoRepository
 import dto.ToDoDto
+import properties.{AppConfig, AppProperties}
 
 class ToDoService(repo: ToDoRepository):
+  val appConfig: AppConfig = AppProperties.config
+
   def getAllToDos: IO[List[ToDoDto]] =
     repo.findAll.map(
       _.map(todo => ToDoDto(todo.title, if todo.completed then "done" else "pending"))
@@ -23,5 +25,5 @@ class ToDoService(repo: ToDoRepository):
       IO.println(s"[ERROR] Failed to create todo: ${err.getMessage}") *> IO.raiseError(err)
     }
 
-  def sendToDoRequest(port: Int): IO[Unit] =
-    ToDoClient(port).sendRequest().flatMap(_ => IO.println("Sent"))
+  def sendToDoRequest(): IO[Unit] =
+    ToDoClient(appConfig.port).sendRequest().flatMap(_ => IO.println("Sent"))

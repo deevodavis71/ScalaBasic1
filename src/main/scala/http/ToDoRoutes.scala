@@ -9,12 +9,11 @@ import org.http4s.Uri.Path.Root
 import org.http4s.circe.*
 import org.http4s.circe.CirceEntityCodec.circeEntityEncoder
 import org.http4s.dsl.io.{Ok, *}
-import properties.{AppConfig, AppProperties}
 import service.ToDoService
 
 given EntityDecoder[IO, ToDoDto] = jsonOf[IO, ToDoDto]
 
-class ToDoRoutes(appConfig: AppConfig, toDoService: ToDoService):
+class ToDoRoutes(toDoService: ToDoService):
   val httpRoutes: HttpRoutes[IO] = HttpRoutes.of[IO] {
     case GET -> Root / "hello" / name =>
       for {
@@ -32,7 +31,7 @@ class ToDoRoutes(appConfig: AppConfig, toDoService: ToDoService):
     case GET -> Root / "todos-request" =>
       for {
         _ <- IO.println(s"'/todos-request' GET request received")
-        _ <- toDoService.sendToDoRequest(appConfig.port)
+        _ <- toDoService.sendToDoRequest()
         res <- Ok(s"Sent request")
       } yield res
 
