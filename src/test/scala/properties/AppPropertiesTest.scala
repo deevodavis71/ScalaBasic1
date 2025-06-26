@@ -32,7 +32,7 @@ object AppPropertiesTest extends Properties:
           List(
             Result.assert(conf.name == "my-app"),
             Result.assert(conf.port == 8080),
-            Result.assert(conf.makeRequestToDoContent.title == "Hello"),
+            Result.assert(conf.makeRequestToDoContent.title == "Hello").log("Title mismatch"),
             Result.assert(conf.makeRequestToDoContent.status == "active")
           )
         )

@@ -58,6 +58,8 @@ libraryDependencies ++= Seq(
 testFrameworks ~=
   (frameworks => (TestFramework("hedgehog.sbt.Framework") +: frameworks).distinct)
 
+testOptions += Tests.Argument("hedgehog.sbt.Framework", "-oF")
+
 // Assembly support
 assembly / mainClass := Some("MainApp")
 
