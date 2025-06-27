@@ -16,7 +16,9 @@ val CatsEffectVersion = "3.5.3"
 val CirceVersion = "0.14.6"
 val DoobieVersion = "1.0.0-RC4"
 val PureConfigVersion = "0.17.9"
+
 val ScalaTestVersion = "3.2.19"
+val ScalaMockVersion = "7.3.3"
 
 // Cats Effects for Async code
 libraryDependencies ++= Seq(
@@ -50,7 +52,8 @@ libraryDependencies ++= Seq(
 
 // Test dependencies
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % ScalaTestVersion % Test
+  "org.scalatest" %% "scalatest" % ScalaTestVersion % Test,
+  "org.scalamock" %% "scalamock" % ScalaMockVersion % Test
 )
 
 Test / scalacOptions += "-Wconf:cat=other-pure-statement&msg=org.scalatest.Assertion:s"
