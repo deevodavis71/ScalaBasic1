@@ -6,10 +6,10 @@ import data.entity.ToDo
 import data.repository.ToDoRepository
 import doobie.util.transactor.Transactor
 import dto.ToDoDto
-import hedgehog.*
-import hedgehog.runner.*
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-object ToDoServiceTest extends Properties:
+class ToDoServiceTest extends AnyFlatSpec with Matchers {
 
   val dummyXa: Transactor[IO] =
     Transactor.fromDriverManager[IO](
@@ -20,32 +20,27 @@ object ToDoServiceTest extends Properties:
       None
     )
 
-  def tests: List[Test] =
-    List(
-      example("getAllToDos maps entities to DTOs", testGetAllToDos),
-      example("createToDo persists and maps correctly", testCreateToDo)
-    )
-
-  def testGetAllToDos: Result =
-    val service = ToDoService(FakeRepo(dummyXa))
-    val result = service.getAllToDos.unsafeRunSync()
-    Result.all(
-      List(
-        Result.assert(result.head == ToDoDto("Test", "done")),
-        Result.assert(result(1) == ToDoDto("Write", "pending"))
-      )
-    )
-
-  def testCreateToDo: Result =
-    val service = ToDoService(FakeRepo(dummyXa))
-    val dto = ToDoDto("New", "done")
-    val result = service.createToDo(dto).unsafeRunSync()
-    Result.assert(result == dto)
-
-  class FakeRepo(xa: Transactor[IO]) extends ToDoRepository(xa: Transactor[IO]):
+  class FakeRepo(xa: Transactor[IO]) extends ToDoRepository(xa) {
     override def findAll: IO[List[ToDo]] =
       IO.pure(List(ToDo(1, "Test", true), ToDo(2, "Write", false)))
 
     override def create(todo: ToDo): IO[ToDo] =
       IO.pure(todo.copy(id = 42))
+  }
 
+  "getAllToDos" should "map entities to DTOs" in {
+    val service = new ToDoService(new FakeRepo(dummyXa))
+    val result = service.getAllToDos.unsafeRunSync()
+    result should contain inOrderOnly(
+      ToDoDto("Test", "done"),
+      ToDoDto("Write", "pending")
+    )
+  }
+
+  "createToDo" should "persist and map correctly" in {
+    val service = new ToDoService(new FakeRepo(dummyXa))
+    val dto = ToDoDto("New", "done")
+    val result = service.createToDo(dto).unsafeRunSync()
+    result shouldBe dto
+  }
+}

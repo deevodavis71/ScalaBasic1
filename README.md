@@ -12,6 +12,7 @@ Shows the following functionality:
 * HTTP Client Request
 * Mapping between DTO & Entity Types
 * Database Requests
+* ScalaTest Unit Tests with Mocking
 
 ## Libraries Used
 
@@ -54,6 +55,32 @@ $ sbt run
 [error] SLF4J: Defaulting to no-operation (NOP) logger implementation
 [error] SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
 [info] Starting the HTTP Server on port 8080 ...
+```
+
+# Running the unit tests
+
+```bash
+$ sbt test
+
+test
+[info] compiling 4 Scala sources to /Users/steve.davis/Development/scala/ScalaBasic1/target/scala-3.3.6/classes ...
+[info] done compiling
+[info] compiling 2 Scala sources to /Users/steve.davis/Development/scala/ScalaBasic1/target/scala-3.3.6/test-classes ...
+[info] done compiling
+[info] AppPropertiesTest:
+[info] AppConfig
+[info] - should load valid config
+[info] ToDoServiceTest:
+[info] getAllToDos
+[info] - should map entities to DTOs
+[info] createToDo
+Created todo: ToDo(42,New,true)
+[info] - should persist and map correctly
+[info] Run completed in 906 milliseconds.
+[info] Total number of tests run: 3
+[info] Suites: completed 2, aborted 0
+[info] Tests: succeeded 3, failed 0, canceled 0, ignored 0, pending 0
+[info] All tests passed.
 ```
 
 # Interacting with the app

@@ -1,18 +1,14 @@
 package properties
 
 import com.typesafe.config.ConfigFactory
-import hedgehog.*
-import hedgehog.runner.*
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 import pureconfig.*
 
-object AppPropertiesTest extends Properties:
 
-  def tests: List[Test] =
-    List(
-      example("load valid config", testValidConfig)
-    )
+class AppPropertiesTest extends AnyFlatSpec with Matchers {
 
-  def testValidConfig: Result =
+  "AppConfig" should "load valid config" in {
     val configStr =
       """
         |name = "my-app"
@@ -26,15 +22,15 @@ object AppPropertiesTest extends Properties:
     val configSource = ConfigSource.fromConfig(ConfigFactory.parseString(configStr))
     val result = configSource.load[AppConfig]
 
-    result match
+    result match {
       case Right(conf) =>
-        Result.all(
-          List(
-            Result.assert(conf.name == "my-app"),
-            Result.assert(conf.port == 8080),
-            Result.assert(conf.makeRequestToDoContent.title == "Hello").log("Title mismatch"),
-            Result.assert(conf.makeRequestToDoContent.status == "active")
-          )
-        )
+        conf.name shouldBe "my-app"
+        conf.port shouldBe 8080
+        conf.makeRequestToDoContent.title shouldBe "Hello"
+        conf.makeRequestToDoContent.status shouldBe "active"
+
       case Left(err) =>
-        Result.failure.log(s"Config failed to load: $err")
+        fail(s"Config failed to load: $err")
+    }
+  }
+}

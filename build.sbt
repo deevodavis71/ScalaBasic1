@@ -16,7 +16,7 @@ val CatsEffectVersion = "3.5.3"
 val CirceVersion = "0.14.6"
 val DoobieVersion = "1.0.0-RC4"
 val PureConfigVersion = "0.17.9"
-val HedgehogVersion = "0.12.0"
+val ScalaTestVersion = "3.2.19"
 
 // Cats Effects for Async code
 libraryDependencies ++= Seq(
@@ -50,15 +50,10 @@ libraryDependencies ++= Seq(
 
 // Test dependencies
 libraryDependencies ++= Seq(
-  "qa.hedgehog" %% "hedgehog-core" % HedgehogVersion,
-  "qa.hedgehog" %% "hedgehog-runner" % HedgehogVersion,
-  "qa.hedgehog" %% "hedgehog-sbt" % HedgehogVersion
+  "org.scalatest" %% "scalatest" % ScalaTestVersion % Test
 )
 
-testFrameworks ~=
-  (frameworks => (TestFramework("hedgehog.sbt.Framework") +: frameworks).distinct)
-
-testOptions += Tests.Argument("hedgehog.sbt.Framework", "-oF")
+Test / scalacOptions += "-Wconf:cat=other-pure-statement&msg=org.scalatest.Assertion:s"
 
 // Assembly support
 assembly / mainClass := Some("MainApp")
